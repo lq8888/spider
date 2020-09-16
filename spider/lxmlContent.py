@@ -19,11 +19,11 @@ examUrl = "http://www.zhongshi.net/html/{}.html "
 # # print(examUrl.format("40511"))
 # print(r.html.text)
 
-# for page in range(1,1551): var = {
-#     # url.format(page)
-#     # print(url.format(page))
-#
-# }
+for page in range(1,1551): var = {
+    # url.format(page)
+    # print(url.format(page))
+
+}
 import requests
 from lxml import etree
 
@@ -32,7 +32,7 @@ response = requests.get(examUrl.format("40511"))
 
 html = etree.HTML(response.text)
 # items = html.xpath("//tr[@class='article-content']")
-titie = html.xpath('//body/section/div/div/article/p[2]//text()')
+titie = html.xpath('//body/section/div/div/article/p//text()')
 # titie = html.xpath('//body[contains(@class, "table-top20")]/tbody/tr//text()')
 print(titie)
 
