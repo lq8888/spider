@@ -11,7 +11,7 @@ newUrl = ''
 
 
 def pageXml():
-    for page in range(1, 2):
+    for page in range(1, 1551):
         newUrl = url.format(page)
         response = requests.get(newUrl)
         html = etree.HTML(response.text)
