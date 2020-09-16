@@ -3,22 +3,36 @@
 
 from urllib.parse import urlencode
 import requests
-from requests_html import HTMLSession
 
-# page每个页面的数组
+# from requests_html import HTMLSession
+#
+# # page每个页面的数组
 url = "http://www.zhongshi.net/html/category/zhuanye/page/{} "
-# 每套题的html
+# # 每套题的html
 examUrl = "http://www.zhongshi.net/html/{}.html "
-# ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240"
+# # ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240"
+#
+# session = HTMLSession()
+# r = session.get(examUrl.format("40511"))
+#
+# print()
+# # print(examUrl.format("40511"))
+# print(r.html.text)
 
-session = HTMLSession()
-r = session.get(examUrl.format("40511"))
+# for page in range(1,1551): var = {
+#     # url.format(page)
+#     # print(url.format(page))
+#
+# }
+import requests
+from lxml import etree
 
-print()
-# print(examUrl.format("40511"))
-print(r.html.text)
+response = requests.get(examUrl.format("40511"))
+# print(response.text)
 
-for page in range(1,1551): var = {
-    # url.format(page)
-    # print(url.format(page))
-}
+html = etree.HTML(response.text)
+# items = html.xpath("//tr[@class='article-content']")
+titie = html.xpath('//body/section/div/div/article/p[2]//text()')
+# titie = html.xpath('//body[contains(@class, "table-top20")]/tbody/tr//text()')
+print(titie)
+
