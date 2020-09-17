@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'robot'
 ]
 
 MIDDLEWARE = [
@@ -67,6 +70,46 @@ TEMPLATES = [
         },
     },
 ]
+LOG_PATH = os.path.join(BASE_DIR, 'log')
+if not os.path.isdir(LOG_PATH):
+    os.mkdir(LOG_PATH)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)s %(message)s'
+        }
+    },
+    'handlers': {
+        'simple_handler': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 5 * 1024 * 1024,
+            'filename': '%s/log' % LOG_PATH,
+            'backupCount': 10,
+            'formatter': 'simple',
+            'encoding': 'utf-8'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['simple_handler'],
+            'level': 'INFO'
+        },
+        'spider': {
+            'handlers': ['simple_handler'],
+            'level': 'INFO'
+        },
+        'multi': {
+            'handlers': ['simple_handler'],
+            'level': 'INFO'
+        }
+    },
+    'filters': {
+    }
+}
 
 WSGI_APPLICATION = 'spider.wsgi.application'
 
@@ -76,8 +119,12 @@ WSGI_APPLICATION = 'spider.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'question_grab',  # 要连接的数据库，连接前需要创建好
+        'USER': 'root',  # 连接数据库的用户名
+        'PASSWORD': '17test',  # 连接数据库的密码
+        'HOST': '47.104.195.241',  # 连接主机，默认本级
+        'PORT': 3306,  # 端口 默认3306
     }
 }
 
