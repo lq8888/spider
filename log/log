@@ -1,0 +1,61 @@
+2020-09-17 10:19:57,583 Watching for file changes with StatReloader
+2020-09-17 10:21:08,724 Watching for file changes with StatReloader
+2020-09-17 10:21:54,266 /Users/pangqixin/PycharmProjects/spider/spider/settings.py changed, reloading.
+2020-09-17 10:21:54,591 Watching for file changes with StatReloader
+2020-09-17 10:22:08,488 Watching for file changes with StatReloader
+2020-09-17 10:39:41,354 Watching for file changes with StatReloader
+2020-09-17 10:42:06,603 /Users/pangqixin/PycharmProjects/spider/spider/__init__.py changed, reloading.
+2020-09-17 10:42:06,948 Watching for file changes with StatReloader
+2020-09-17 10:42:39,455 Watching for file changes with StatReloader
+2020-09-17 10:42:51,207 "GET / HTTP/1.1" 200 16351
+2020-09-17 10:51:49,415 Not Found: /exam.html
+2020-09-17 10:51:49,416 "GET /exam.html HTTP/1.1" 404 1966
+2020-09-17 10:56:15,077 /Users/pangqixin/PycharmProjects/spider/spider/settings.py changed, reloading.
+2020-09-17 10:56:15,451 Watching for file changes with StatReloader
+2020-09-17 10:59:58,412 /Users/pangqixin/PycharmProjects/spider/robot/models.py changed, reloading.
+2020-09-17 10:59:58,786 Watching for file changes with StatReloader
+2020-09-17 11:15:00,893 Watching for file changes with StatReloader
+2020-09-17 11:16:50,088 Watching for file changes with StatReloader
+2020-09-17 11:18:31,073 /Users/pangqixin/PycharmProjects/spider/robot/models.py changed, reloading.
+2020-09-17 11:18:40,781 Watching for file changes with StatReloader
+2020-09-17 11:18:43,955 Not Found: /
+2020-09-17 11:18:43,956 "GET / HTTP/1.1" 404 2075
+2020-09-17 11:18:50,243 Internal Server Error: /exam
+Traceback (most recent call last):
+  File "/Users/pangqixin/PycharmProjects/TeacherAndroidAutomation/venv/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/Users/pangqixin/PycharmProjects/TeacherAndroidAutomation/venv/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/pangqixin/PycharmProjects/spider/robot/views.py", line 7, in show_exam_handle_index_controller
+    return render(request, "robot/exam.html")
+  File "/Users/pangqixin/PycharmProjects/TeacherAndroidAutomation/venv/lib/python3.7/site-packages/django/shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/pangqixin/PycharmProjects/TeacherAndroidAutomation/venv/lib/python3.7/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/pangqixin/PycharmProjects/TeacherAndroidAutomation/venv/lib/python3.7/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: robot/exam.html
+2020-09-17 11:18:50,244 "GET /exam HTTP/1.1" 500 73711
+2020-09-17 11:19:11,750 Not Found: /exam.html
+2020-09-17 11:19:11,750 "GET /exam.html HTTP/1.1" 404 2120
+2020-09-17 11:19:15,830 Internal Server Error: /exam
+Traceback (most recent call last):
+  File "/Users/pangqixin/PycharmProjects/TeacherAndroidAutomation/venv/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/Users/pangqixin/PycharmProjects/TeacherAndroidAutomation/venv/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/pangqixin/PycharmProjects/spider/robot/views.py", line 7, in show_exam_handle_index_controller
+    return render(request, "robot/exam.html")
+  File "/Users/pangqixin/PycharmProjects/TeacherAndroidAutomation/venv/lib/python3.7/site-packages/django/shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/pangqixin/PycharmProjects/TeacherAndroidAutomation/venv/lib/python3.7/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/pangqixin/PycharmProjects/TeacherAndroidAutomation/venv/lib/python3.7/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: robot/exam.html
+2020-09-17 11:19:15,830 "GET /exam HTTP/1.1" 500 73711
+2020-09-17 11:21:11,326 "GET /exam HTTP/1.1" 200 130
+2020-09-17 11:21:13,186 "GET /exam HTTP/1.1" 200 130
+2020-09-17 11:21:51,125 "GET /exam HTTP/1.1" 200 165
+2020-09-17 11:24:53,496 /Users/pangqixin/PycharmProjects/spider/robot/views.py changed, reloading.
+2020-09-17 11:24:53,890 Watching for file changes with StatReloader
