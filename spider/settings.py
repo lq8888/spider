@@ -15,6 +15,8 @@ import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import django
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -70,9 +72,6 @@ TEMPLATES = [
         },
     },
 ]
-LOG_PATH = os.path.join(BASE_DIR, 'log')
-if not os.path.isdir(LOG_PATH):
-    os.mkdir(LOG_PATH)
 
 LOGGING = {
     'version': 1,
@@ -87,7 +86,7 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'maxBytes': 5 * 1024 * 1024,
-            'filename': '%s/log' % LOG_PATH,
+            'filename': os.path.join(BASE_DIR, "logs/spider_log.logs"),
             'backupCount': 10,
             'formatter': 'simple',
             'encoding': 'utf-8'
