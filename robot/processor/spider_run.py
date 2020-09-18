@@ -124,7 +124,7 @@ class Spider(object):
                     else:
                         question_dict["type"] = '9'
                     continue
-                if question_dict["type"] in ['1', '7']:
+                if question_dict["type"] in ['1', '2']:
                     if i[0: 2] not in ['A.', 'B.', 'C.', 'D.']:
                         choice_question_dict["single_question"].append(i)
                     else:
