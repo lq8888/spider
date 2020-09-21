@@ -170,8 +170,10 @@ class Spider(object):
         total_page = int(self.get_total_page(1))
         for i in range(total_page):
             for url in self.get_paper_url(i):
-                print(self.get_paper_data(url))
-                time.sleep(1)
+                final_data = self.get_paper_data(url)
+                print(final_data)
+                # return final_data
+                # time.sleep(1)
 
 
 if __name__ == '__main__':
