@@ -2,9 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    {% load static %}
     <title>中师试卷</title>
 </head>
 <body>
-<button>获取中师试卷</button>
+<input id="question-all-button" type="button" value="获取全部题目" onclick="fetch_all_exam()">
+<div style="height: 20px"></div>
+    <div id="question-all-div">未获取</div>
+    <div style="height: 20px"></div>
+<input id="question-new-button" type="button" value="获取最新题目" onclick="fetch_new_exam()">
+<div style="height: 20px"></div>
+    <div id="question-new-div">未获取</div>
+    <div style="height: 20px"></div>
 </body>
+<script src="{% static 'exam.js' %}"></script>
 </html>

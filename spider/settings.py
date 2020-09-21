@@ -73,42 +73,7 @@ TEMPLATES = [
     },
 ]
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'simple': {
-            'format': '%(asctime)s %(message)s'
-        }
-    },
-    'handlers': {
-        'simple_handler': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'maxBytes': 5 * 1024 * 1024,
-            'filename': os.path.join(BASE_DIR, "logs/spider_log.logs"),
-            'backupCount': 10,
-            'formatter': 'simple',
-            'encoding': 'utf-8'
-        }
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['simple_handler'],
-            'level': 'INFO'
-        },
-        'spider': {
-            'handlers': ['simple_handler'],
-            'level': 'INFO'
-        },
-        'multi': {
-            'handlers': ['simple_handler'],
-            'level': 'INFO'
-        }
-    },
-    'filters': {
-    }
-}
+
 
 WSGI_APPLICATION = 'spider.wsgi.application'
 
