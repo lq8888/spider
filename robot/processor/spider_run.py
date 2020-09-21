@@ -30,12 +30,12 @@ logger = get_logger()
 
 
 class Spider(object):
-
+    
     def __init__(self):
         self.start_url = "http://www.zhongshi.net/html/category/zhuanye/page/{}"
         self.paper_url = "http://www.zhongshi.net/html/{}.html"
         self.headers = {"User-Agent": random.choice(user_agents)}
-
+    
     # 获取页面对象
     def parse_url(self, url, index=None):
         session = HTMLSession()
@@ -48,23 +48,24 @@ class Spider(object):
         # 重新构建页面
         h = HTML(html=r)
         return h
-
+    
     # 获取试卷链接列表
     def get_paper_url(self, index):
         h = self.parse_url(self.start_url, index)
         paper_url_list = h.xpath('//body/section/div/div/article/header/h2//a/@href')
         return paper_url_list
-
+    
     # 获取总页数
     def get_total_page(self, index):
         h = self.parse_url(self.start_url, index)
         total_page = re.search(r"共 (.*?) 页", h.text).group(1)
         return total_page
-
+    
     # 获取题目数据
     def get_paper_data(self, paper_url):
         logger.info('开始获取试卷...')
-
+        paper_tag = ''
+        print(paper_url)
         h = self.parse_url(paper_url)
         # 获取页面中的所有文本
         content = h.text
@@ -74,23 +75,26 @@ class Spider(object):
         # 获取试卷时间
         paper_time = h.xpath('/html/body/section/div[1]/div/header/div/span[1]')[0].text
         # 获取试卷标签
-        paper_tag = h.xpath('/html/body/section/div[1]/div/div[4]/a')[0].text
+        tag = h.xpath('/html/body/section/div[1]/div/div[contains(@class, "article-tags")]/child')
+        if len(tag) != 0:
+            paper_tag = h.xpath('/html/body/section/div[1]/div/div[contains(@class, "article-tags")]/a')[0].text
+        
         # 判断是否展示题型的标志位
         try:
             is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[2]/span')[0].text
         except:
             is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[3]/span')[0].text
-
+        
         # 构造试卷基本信息
         paper_msg_dict = {'paper_title': paper_title, 'paper_time': paper_time, 'paper_tag': paper_tag}
-
+        
         # 定义题目存放格式
         all_question_list = []
         all_question_list.append(paper_msg_dict)
         question_type = "1"
         question_dict = {"type": question_type, "question": []}
         choice_question_dict = {"single_question": [], "answer": []}
-
+        
         # 判断是否含题型
         if '一、' in is_question_type:
             pattern = re.compile(r'一、([\w\W]*)参考答案更多资料')
@@ -98,7 +102,7 @@ class Spider(object):
             content_list = all_question_content.split('\n')
             content_list.pop(-1)
             # print(content_list)
-
+            
             # 获取题目
             for i in content_list:
                 if i[0: 2] in ['一、', '二、', '三、', '四、', '五、', '六、']:
@@ -132,11 +136,12 @@ class Spider(object):
                     if 'D.' in i:
                         question_dict["question"].append(choice_question_dict)
                         choice_question_dict = {"single_question": [], "answer": []}
+                
                 else:
                     question_dict["question"].append(i)
                 if content_list[-1] == i:
                     all_question_list.append(question_dict)
-
+        
         # 不含题型执行下面的逻辑
         else:
             pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
@@ -144,7 +149,7 @@ class Spider(object):
             content_list = all_question_content.split('\n')
             content_list.pop(-1)
             # print(content_list)
-
+            
             # 获取题目
             for i in content_list:
                 if i[0: 2] not in ['A.', 'B.', 'C.', 'D.']:
@@ -155,12 +160,12 @@ class Spider(object):
                     question_dict["question"].append(choice_question_dict)
                     choice_question_dict = {"single_question": [], "answer": []}
             all_question_list.append(question_dict)
-
+        
         # 返回json格式数据
         final_json = json.dumps(all_question_list, ensure_ascii=False)
-        logger.info(f'{paper_title}试卷获取结束~')
+        logger.info('{}试卷获取结束~'.format(paper_title))
         return final_json
-
+    
     def run(self):
         total_page = int(self.get_total_page(1))
         for i in range(total_page):
@@ -172,3 +177,4 @@ class Spider(object):
 if __name__ == '__main__':
     spider = Spider()
     spider.run()
+
