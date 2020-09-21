@@ -23,7 +23,8 @@ user_agents = [
     'Lynx/2.8.5rel.1 libwww-FM/2.14 SSL-MM/1.4.1 GNUTLS/1.2.9',
     "Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.7 (KHTML, like Gecko) Ubuntu/11.04 Chromium/16.0.912.77 Chrome/16.0.912.77 Safari/535.7",
     "Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:10.0) Gecko/20100101 Firefox/10.0 ",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36",
+    'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Mobile Safari/537.36'
 ]
 
 logger = get_logger()
@@ -35,6 +36,8 @@ class Spider(object):
         self.start_url = "http://www.zhongshi.net/html/category/zhuanye/page/{}"
         self.paper_url = "http://www.zhongshi.net/html/{}.html"
         self.headers = {"User-Agent": random.choice(user_agents)}
+        aa
+        # 获取试卷链接列表
     
     # 获取页面对象
     def parse_url(self, url, index=None):
@@ -160,23 +163,25 @@ class Spider(object):
                     question_dict["question"].append(choice_question_dict)
                     choice_question_dict = {"single_question": [], "answer": []}
             all_question_list.append(question_dict)
-        
         # 返回json格式数据
+       
         final_json = json.dumps(all_question_list, ensure_ascii=False)
         logger.info('{}试卷获取结束~'.format(paper_title))
         return final_json
     
-    def run(self):
-        total_page = int(self.get_total_page(1))
-        for i in range(total_page):
+    def run(self, page_index=1, total_page=50, is_hand_set=False):
+        if not is_hand_set:
+            total_page = int(self.get_total_page(1))
+        
+        for i in range(page_index - 1, total_page):
             for url in self.get_paper_url(i):
                 final_data = self.get_paper_data(url)
                 print(final_data)
                 # return final_data
                 # time.sleep(1)
+        logger.info('当前试卷index~{}'.format(i))
 
 
 if __name__ == '__main__':
     spider = Spider()
     spider.run()
-
