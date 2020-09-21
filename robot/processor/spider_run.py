@@ -7,6 +7,7 @@ import time
 
 from requests_html import HTMLSession, HTML
 
+from robot.models import ZSPapers
 from robot.processor.log_handler import get_logger
 
 user_agents = [
@@ -36,7 +37,6 @@ class Spider(object):
         self.start_url = "http://www.zhongshi.net/html/category/zhuanye/page/{}"
         self.paper_url = "http://www.zhongshi.net/html/{}.html"
         self.headers = {"User-Agent": random.choice(user_agents)}
-        aa
         # 获取试卷链接列表
     
     # 获取页面对象
@@ -66,6 +66,7 @@ class Spider(object):
     
     # 获取题目数据
     def get_paper_data(self, paper_url):
+        global zs_paper, question
         logger.info('开始获取试卷...')
         paper_tag = ''
         print(paper_url)
@@ -77,6 +78,7 @@ class Spider(object):
         paper_title = h.xpath('/html/body/section/div[1]/div/header/h1/a')[0].text
         # 获取试卷时间
         paper_time = h.xpath('/html/body/section/div[1]/div/header/div/span[1]')[0].text
+        exam_id = h.xpath('/html/body/section/div[1]/div/header/div/span[1]')[0].text
         # 获取试卷标签
         tag = h.xpath('/html/body/section/div[1]/div/div[contains(@class, "article-tags")]/child')
         if len(tag) != 0:
@@ -89,7 +91,8 @@ class Spider(object):
             is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[3]/span')[0].text
         
         # 构造试卷基本信息
-        paper_msg_dict = {'paper_title': paper_title, 'paper_time': paper_time, 'paper_tag': paper_tag}
+        paper_msg_dict = {'paper_title': paper_title, 'paper_time': paper_time,
+                          'paper_tag': paper_tag, 'type': 999, 'data_pid': paper_url[29:34]}
         
         # 定义题目存放格式
         all_question_list = []
@@ -163,8 +166,39 @@ class Spider(object):
                     question_dict["question"].append(choice_question_dict)
                     choice_question_dict = {"single_question": [], "answer": []}
             all_question_list.append(question_dict)
+        
         # 返回json格式数据
-       
+        for data in all_question_list:
+            zs_paper = ZSPapers()
+            data_type = data.get('type')
+            zs_paper.data_pid = data.get('data_pid')
+            if data.__contains__('question'):
+                question = data.get('question')
+            if data_type == 999:
+                zs_paper.exam_title = data.get('paper_title')
+                zs_paper.paper_time = data.get('paper_time')
+                zs_paper.paper_tag = data.get('paper_tag')
+            elif data_type == 1:
+                zs_paper.choice_question = question
+            elif data_type == 2:
+                zs_paper.much_choice_question = question
+            elif data_type == 3:
+                zs_paper.judge_question = question
+            elif data_type == 4:
+                zs_paper.completion_question = question
+            elif data_type == 5:
+                zs_paper.short_answer_question = question
+            elif data_type == 6:
+                zs_paper.explanation_question = question
+            elif data_type == 7:
+                zs_paper.analysis_question = question
+            elif data_type == 8:
+                zs_paper.longer_question = question
+            else:
+                zs_paper.other_question = question
+        
+        zs_paper.save()
+        
         final_json = json.dumps(all_question_list, ensure_ascii=False)
         logger.info('{}试卷获取结束~'.format(paper_title))
         return final_json
@@ -177,6 +211,7 @@ class Spider(object):
             for url in self.get_paper_url(i):
                 final_data = self.get_paper_data(url)
                 print(final_data)
+                
                 # return final_data
                 # time.sleep(1)
         logger.info('当前试卷index~{}'.format(i))

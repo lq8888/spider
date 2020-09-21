@@ -5,7 +5,7 @@ from django.db import models
 
 
 class ZSPapers(models.Model):
-    # 时间
+    # 试卷id
     data_pid = models.CharField(max_length=15)
     # 试卷名称
     exam_title = models.TextField()
@@ -29,6 +29,8 @@ class ZSPapers(models.Model):
     much_choice_question = models.TextField()
     # 论述题
     longer_question = models.TextField()
+    # 其他题
+    other_question = models.TextField()
 
 
 
