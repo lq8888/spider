@@ -9,7 +9,7 @@ from requests_html import HTMLSession, HTML
 
 from robot.models import ZSPapers
 
-# from robot.processor.log_handler import get_logger
+from robot.processor.log_handler import get_logger
 
 user_agents = [
     "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
@@ -30,7 +30,7 @@ user_agents = [
 ]
 
 
-# logger = get_logger()
+logger = get_logger()
 
 
 class Spider(object):
@@ -69,7 +69,7 @@ class Spider(object):
     # 获取题目数据
     def get_paper_data(self, paper_url):
         global zs_paper, question
-        # logger.info('开始获取试卷...')
+        logger.info('开始获取试卷...')
         paper_tag = ''
         print(paper_url)
         h = self.parse_url(paper_url)
@@ -207,7 +207,7 @@ class Spider(object):
         zs_paper.save()
         print('zs_paper.save()')
         final_json = json.dumps(all_question_list, ensure_ascii=False)
-        # logger.info('{}试卷获取结束~'.format(paper_title))
+        logger.info('{}试卷获取结束~'.format(paper_title))
         return final_json
     
     def run(self, page_index=1, total_page=50, is_hand_set=False):
@@ -221,7 +221,7 @@ class Spider(object):
                 
                 # return final_data
                 # time.sleep(1)
-        # logger.info('当前试卷index~{}'.format(i))
+        logger.info('当前试卷index~{}'.format(i))
 
 
 if __name__ == '__main__':

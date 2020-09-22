@@ -12,7 +12,7 @@ def get_logger():
     logger.setLevel(logging.INFO)
     # 第二步，创建一个handler，用于写入日志文件
     rq = time.strftime('%Y%m%d%H%M', time.localtime(time.time()))
-    log_path = os.path.dirname(os.path.dirname(os.getcwd())) + '/logs/'
+    log_path = os.path.abspath(os.path.dirname(os.getcwd())) + '/spider/logs/'
     log_name = log_path + rq + '.log'
     logfile = log_name
     fh = logging.FileHandler(logfile, mode='w')
