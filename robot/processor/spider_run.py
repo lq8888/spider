@@ -210,7 +210,7 @@ class Spider(object):
         logger.info('{}试卷获取结束~'.format(paper_title))
         return final_json
     
-    def run(self, page_index=1, total_page=50, is_hand_set=False):
+    def run(self, page_index, total_page, is_hand_set=False):
         if not is_hand_set:
             total_page = int(self.get_total_page(1))
         

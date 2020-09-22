@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -72,9 +73,6 @@ TEMPLATES = [
         },
     },
 ]
-
-
-
 WSGI_APPLICATION = 'spider.wsgi.application'
 
 
@@ -89,6 +87,10 @@ DATABASES = {
         'PASSWORD': '17test',  # 连接数据库的密码
         'HOST': '47.104.195.241',  # 连接主机，默认本级
         'PORT': 3306,  # 端口 默认3306
+        'OPTIONS': {
+            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"',
+            'charset': 'utf8mb4'
+        }
     }
 }
 
@@ -122,9 +124,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_L10N = True
-
+APPEND_SLASH = False
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

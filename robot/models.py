@@ -31,3 +31,6 @@ class ZSPapers(models.Model):
     longer_question = models.TextField()
     # 其他题
     other_question = models.TextField()
+
+
+

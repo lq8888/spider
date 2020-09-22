@@ -26,7 +26,6 @@ function fetch_all_exam() {
     });
 }
 
-
 function fetch_new_exam() {
     request_time = 0;
     var wait_message = "获取试卷中:";
@@ -38,7 +37,7 @@ function fetch_new_exam() {
     }, 1000);
 
     $.ajax({
-        url:"/exam/new",
+        url:"/exam/2",
         method:"GET",
         success:function(data) {
             clearInterval(wait_interval);

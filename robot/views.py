@@ -4,7 +4,7 @@ from django.core import serializers
 from robot.models import ZSPapers
 import json
 import time
-
+from django.views.decorators.csrf import csrf_exempt
 from robot.processor.spider_run import Spider
 
 
@@ -13,8 +13,6 @@ def show_exam_handle_index_controller(request):
 
 
 def get_exam_all_controller(request):
-    print('==================')
-    # time.sleep(20)
     spider = Spider()
     spider.run()
     data = {
@@ -23,11 +21,12 @@ def get_exam_all_controller(request):
     return HttpResponse(json.dumps(data))
 
 
-def get_exam_new_controller(request):
-    spider = Spider()
-    spider.run(1, 2, True)
-    # count = ZSPapers().objects.count()
-    # print(count)
+def get_exam_new_controller(request, num):
+    print(num)
+    # page_num = request.POST.get("page_title")
+    time.sleep(20)
+    # spider = Spider()
+    # spider.run(1, 2, True)
     data = {
         "status": "0"
     }
