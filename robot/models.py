@@ -6,7 +6,7 @@ from django.db import models
 
 class ZSPapers(models.Model):
     # 试卷id
-    data_pid = models.CharField(max_length=15)
+    data_pid = models.CharField(max_length=15, primary_key=True)
     # 试卷名称
     exam_title = models.TextField()
     # 试卷创建时间
@@ -31,6 +31,3 @@ class ZSPapers(models.Model):
     longer_question = models.TextField()
     # 其他题
     other_question = models.TextField()
-
-
-
