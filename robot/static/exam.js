@@ -28,6 +28,7 @@ function fetch_all_exam() {
 
 function fetch_new_exam() {
     request_time = 0;
+    var page_num = document.getElementById("question-new-input").value
     var wait_message = "获取试卷中:";
     document.getElementById("question-new-div").innerHTML = wait_message;
     wait_interval = setInterval(function() {
@@ -37,7 +38,7 @@ function fetch_new_exam() {
     }, 1000);
 
     $.ajax({
-        url:"/exam/2",
+        url:"/exam/"+page_num,
         method:"GET",
         success:function(data) {
             clearInterval(wait_interval);
