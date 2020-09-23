@@ -167,28 +167,68 @@ class Spider(object):
                     question_dict["question"].append(choice_question_dict)
                     choice_question_dict = {"single_question": [], "answer": []}
             all_question_list.append(question_dict)
-        elif is_question_type == '填空题':
-            pattern = re.compile(r'填空题([\w\W]*)参考答案更多资料')
-            all_question_content = re.search(pattern, content).group()
-            content_list = all_question_content.split('\n')
-            content_list.pop(0)
-            content_list.pop(-1)
-            question_dict['type'] = '4'
+        elif is_question_type in ['单选题', '多选题', '判断题', '填空题', '简答题', '填空题：']:
+            if is_question_type == '填空题':
+                pattern = re.compile(r'填空题([\w\W]*)参考答案更多资料')
+                all_question_content = re.search(pattern, content).group()
+                content_list = all_question_content.split('\n')
+                content_list.pop(0)
+                content_list.pop(-1)
+                question_dict['type'] = '4'
 
-            for i in content_list:
-                question_dict["question"].append(i)
-            all_question_list.append(question_dict)
-        elif is_question_type == '填空题：':
-            pattern = re.compile(r'填空题：([\w\W]*)参考答案更多资料')
-            all_question_content = re.search(pattern, content).group()
-            content_list = all_question_content.split('\n')
-            content_list.pop(0)
-            content_list.pop(-1)
-            question_dict['type'] = '4'
+                for i in content_list:
+                    question_dict["question"].append(i)
+                all_question_list.append(question_dict)
+            elif is_question_type == '填空题：':
+                pattern = re.compile(r'填空题：([\w\W]*)参考答案更多资料')
+                all_question_content = re.search(pattern, content).group()
+                content_list = all_question_content.split('\n')
+                content_list.pop(0)
+                content_list.pop(-1)
+                question_dict['type'] = '4'
 
-            for i in content_list:
-                question_dict["question"].append(i)
-            all_question_list.append(question_dict)
+                for i in content_list:
+                    question_dict["question"].append(i)
+                all_question_list.append(question_dict)
+            if is_question_type == '单选题':
+                pattern = re.compile(r'单选题([\w\W]*)参考答案更多资料')
+                all_question_content = re.search(pattern, content).group()
+                content_list = all_question_content.split('\n')
+                content_list.pop(-1)
+                for i in content_list:
+                    if i in ['单选题', '多选题', '判断题', '填空题', '简答题']:
+                        if '单选题' not in i:
+                            all_question_list.append(question_dict)
+                            question_dict = {"type": question_type, "question": []}
+                        if i == '单选题':
+                            question_dict["type"] = '1'
+                        elif i == '多选题':
+                            question_dict["type"] = '2'
+                        elif i == '判断题':
+                            question_dict["type"] = '3'
+                        elif i == '填空题':
+                            question_dict["type"] = '4'
+                        elif i == '简答题':
+                            question_dict["type"] = '5'
+                        elif i == '名词解释':
+                            question_dict["type"] = '6'
+                        elif i == '案例分析':
+                            question_dict["type"] = '7'
+                        else:
+                            question_dict["type"] = '8'
+                        continue
+                    if question_dict["type"] in ['1', '2']:
+                        if i[0: 2] not in ['A.', 'B.', 'C.', 'D.']:
+                            choice_question_dict["single_question"].append(i)
+                        else:
+                            choice_question_dict["answer"].append(i)
+                        if 'D.' in i:
+                            question_dict["question"].append(choice_question_dict)
+                            choice_question_dict = {"single_question": [], "answer": []}
+                    else:
+                        question_dict["question"].append(i)
+                    if content_list[-1] == i:
+                        all_question_list.append(question_dict)
         else:
             pass
         zs_paper = ZSPapers()
