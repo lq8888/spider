@@ -41,7 +41,7 @@ class ZSChoiceQuestion(models.Model):
     # 题目选项
     question_option = models.TextField()
     # 试卷id
-    paper = models.ForeignKey("ZSPapers", on_delete=models.DO_NOTHING)
+    paper_id = models.CharField(max_length=15)
 
 
 # 判断题
@@ -49,7 +49,7 @@ class ZSJudgeQuestion(models.Model):
     # 题目标题
     question_title = models.TextField()
     # 试卷id
-    paper = models.ForeignKey("ZSPapers", on_delete=models.DO_NOTHING)
+    paper_id = models.CharField(max_length=15)
 
 
 # 填空题
@@ -57,7 +57,7 @@ class ZSCompletionQuestion(models.Model):
     # 题目标题
     question_title = models.TextField()
     # 试卷id
-    paper = models.ForeignKey("ZSPapers", on_delete=models.DO_NOTHING)
+    paper_id = models.CharField(max_length=15)
 
 
 # 简答题
@@ -65,7 +65,7 @@ class ZSShortAnswerQuestion(models.Model):
     # 题目标题
     question_title = models.TextField()
     # 试卷id
-    paper = models.ForeignKey("ZSPapers", on_delete=models.DO_NOTHING)
+    paper_id = models.CharField(max_length=15)
 
 
 # 名词解释题
@@ -73,7 +73,7 @@ class ZSExplanationQuestion(models.Model):
     # 题目标题
     question_title = models.TextField()
     # 试卷id
-    paper = models.ForeignKey("ZSPapers", on_delete=models.DO_NOTHING)
+    paper_id = models.CharField(max_length=15)
 
 
 # 案例分析题
@@ -81,7 +81,7 @@ class ZSAnalysisQuestion(models.Model):
     # 题目标题
     question_title = models.TextField()
     # 试卷id
-    paper = models.ForeignKey("ZSPapers", on_delete=models.DO_NOTHING)
+    paper_id = models.CharField(max_length=15)
 
 
 # 多选题
@@ -91,7 +91,7 @@ class ZSMuchChoiceQuestion(models.Model):
     # 题目选项
     question_option = models.TextField()
     # 试卷id
-    paper = models.ForeignKey("ZSPapers", on_delete=models.DO_NOTHING)
+    paper_id = models.CharField(max_length=15)
 
 
 # 论述题
@@ -99,7 +99,7 @@ class ZSLongerQuestion(models.Model):
     # 题目标题
     question_title = models.TextField()
     # 试卷id
-    paper = models.ForeignKey("ZSPapers", on_delete=models.DO_NOTHING)
+    paper_id = models.CharField(max_length=15)
 
 
 # 其他题
@@ -107,4 +107,4 @@ class ZSOtherQuestion(models.Model):
     # 题目标题
     question_title = models.TextField()
     # 试卷id
-    paper = models.ForeignKey("ZSPapers", on_delete=models.DO_NOTHING)
+    paper_id = models.CharField(max_length=15)

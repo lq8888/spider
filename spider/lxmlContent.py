@@ -9,7 +9,7 @@ import requests
 # # page每个页面的数组
 url = "http://www.zhongshi.net/html/category/zhuanye/page/{} "
 # # 每套题的html
-examUrl = "http://www.zhongshi.net/html/{}.html "
+examUrl = "http://www.zhongshi.net/html/41807.html "
 # # ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240"
 #
 # session = HTMLSession()
