@@ -14,7 +14,7 @@ def show_exam_handle_index_controller(request):
 
 def get_exam_all_controller(request):
     spider = Spider()
-    spider.run(2, False)
+    spider.run(1, False)
     data = {
         "status": "0"
     }
