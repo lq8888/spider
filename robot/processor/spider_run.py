@@ -148,15 +148,15 @@ class Spider(object):
                     question_dict["question"].append(i)
                 if content_list[-1] == i:
                     all_question_list.append(question_dict)
-        
+
         # 不含题型执行下面的逻辑
-        else:
+        elif '1' in is_question_type:
             pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
             all_question_content = re.search(pattern, content).group()
             content_list = all_question_content.split('\n')
             content_list.pop(-1)
             # print(content_list)
-            
+
             # 获取题目
             for i in content_list:
                 if i[0: 2] not in ['A.', 'B.', 'C.', 'D.']:
@@ -167,6 +167,30 @@ class Spider(object):
                     question_dict["question"].append(choice_question_dict)
                     choice_question_dict = {"single_question": [], "answer": []}
             all_question_list.append(question_dict)
+        elif is_question_type == '填空题':
+            pattern = re.compile(r'填空题([\w\W]*)参考答案更多资料')
+            all_question_content = re.search(pattern, content).group()
+            content_list = all_question_content.split('\n')
+            content_list.pop(0)
+            content_list.pop(-1)
+            question_dict['type'] = '4'
+
+            for i in content_list:
+                question_dict["question"].append(i)
+            all_question_list.append(question_dict)
+        elif is_question_type == '填空题：':
+            pattern = re.compile(r'填空题：([\w\W]*)参考答案更多资料')
+            all_question_content = re.search(pattern, content).group()
+            content_list = all_question_content.split('\n')
+            content_list.pop(0)
+            content_list.pop(-1)
+            question_dict['type'] = '4'
+
+            for i in content_list:
+                question_dict["question"].append(i)
+            all_question_list.append(question_dict)
+        else:
+            pass
         zs_paper = ZSPapers()
         zs_short_answer_question = ZSShortAnswerQuestion()
         zs_other_question = ZSOtherQuestion()
