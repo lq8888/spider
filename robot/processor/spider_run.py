@@ -140,6 +140,7 @@ class Spider(object):
             is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[3]/span')[0].text
 
         is_material = h.xpath('/html/body/section/div[1]/div/article/p[2]')[0].text
+        is_material1 = h.xpath('/html/body/section/div[1]/div/article/p[3]')[0].text
         # 构造试卷基本信息
         paper_msg_dict = {'paper_title': paper_title, 'paper_time': paper_time,
                           'paper_tag': paper_tag, 'type': '999', 'data_pid': paper_url[29:34]}
@@ -240,6 +241,30 @@ class Spider(object):
         # 获取材料题
         elif len(is_material) > 50:
             all_question_list.append({"material": is_material, "type": '11'})
+
+            pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
+            all_question_content = re.search(pattern, content).group()
+            content_list = all_question_content.split('\n')
+            content_list.pop(-1)
+
+            for i in content_list:
+                if i[0: 1] not in ['A', 'B', 'C', 'D']:
+                    choice_question_dict["single_question"].append(i)
+                else:
+                    choice_question_dict["answer"].append(i)
+                if 'D' in i:
+                    question_dict["question"].append(choice_question_dict)
+                    choice_question_dict = {"single_question": [], "answer": []}
+            question_dict['type'] = '11'
+            all_question_list.append(question_dict)
+        elif is_material1.startswith('①'):
+            try:
+                material_pattern = re.compile(r'①([\w\W]*)》）')
+                material_content = re.search(material_pattern, content).group()
+            except:
+                material_pattern = re.compile(r'①([\w\W]*)其中不乏艺术精品。')
+                material_content = re.search(material_pattern, content).group()
+            all_question_list.append({"material": material_content, "type": '11'})
 
             pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
             all_question_content = re.search(pattern, content).group()
