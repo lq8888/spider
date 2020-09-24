@@ -193,6 +193,7 @@ class Spider(object):
                     else:
                         choice_question_dict["answer"].append(i)
                     if 'D' in i:
+                        choice_question_dict["single_question"] = ''.join(choice_question_dict["single_question"])
                         question_dict["question"].append(choice_question_dict)
                         choice_question_dict = {"single_question": [], "answer": []}
                 else:
@@ -215,6 +216,7 @@ class Spider(object):
                 else:
                     choice_question_dict["answer"].append(i)
                 if 'D' in i:
+                    choice_question_dict["single_question"] = ''.join(choice_question_dict["single_question"])
                     question_dict["question"].append(choice_question_dict)
                     choice_question_dict = {"single_question": [], "answer": []}
             all_question_list.append(question_dict)
@@ -253,6 +255,7 @@ class Spider(object):
                 else:
                     choice_question_dict["answer"].append(i)
                 if 'D' in i:
+                    choice_question_dict["single_question"] = ''.join(choice_question_dict["single_question"])
                     question_dict["question"].append(choice_question_dict)
                     choice_question_dict = {"single_question": [], "answer": []}
             question_dict['type'] = '11'
@@ -277,6 +280,7 @@ class Spider(object):
                 else:
                     choice_question_dict["answer"].append(i)
                 if 'D' in i:
+                    choice_question_dict["single_question"] = ''.join(choice_question_dict["single_question"])
                     question_dict["question"].append(choice_question_dict)
                     choice_question_dict = {"single_question": [], "answer": []}
             question_dict['type'] = '11'
@@ -307,7 +311,7 @@ class Spider(object):
                     for robot_question in data['question']:
                         zs_choice_question = ZSChoiceQuestion()
                         zs_choice_question.paper_id = str(zs_paper.data_pid)
-                        zs_choice_question.question_title = robot_question["single_question"][0]
+                        zs_choice_question.question_title = robot_question["single_question"]
                         zs_choice_question.question_option = robot_question["answer"]
                         zs_choice_question.save()
                 except Exception as e:
@@ -316,7 +320,7 @@ class Spider(object):
                 zs_paper.much_choice_question = question
                 for robot_question in data['question']:
                     zs_much_choice_question = ZSMuchChoiceQuestion()
-                    zs_much_choice_question.question_title = robot_question["single_question"][0]
+                    zs_much_choice_question.question_title = robot_question["single_question"]
                     zs_much_choice_question.question_option = robot_question["answer"]
                     zs_much_choice_question.paper_id = str(zs_paper.data_pid)
                     zs_much_choice_question.save()
@@ -368,7 +372,7 @@ class Spider(object):
                 for robot_question in data['question']:
                     zs_indefinite_question = ZSIndefiniteQuestion()
                     zs_indefinite_question.paper_id = str(zs_paper.data_pid)
-                    zs_indefinite_question.question_title = robot_question["single_question"][0]
+                    zs_indefinite_question.question_title = robot_question["single_question"]
                     zs_indefinite_question.question_option = robot_question["answer"]
                     zs_indefinite_question.save()
             elif data_type == '10':
