@@ -239,7 +239,7 @@ class Spider(object):
                 all_question_list.append(question_dict)
         # 获取材料题
         elif len(is_material) > 50:
-            all_question_list.append({"material": is_material})
+            all_question_list.append({"material": is_material, "type": '11'})
 
             pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
             all_question_content = re.search(pattern, content).group()
