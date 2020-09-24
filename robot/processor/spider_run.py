@@ -8,7 +8,7 @@ import time
 from requests_html import HTMLSession, HTML
 
 from robot.models import ZSPapers,ZSAnalysisQuestion,ZSChoiceQuestion,ZSCompletionQuestion,ZSExplanationQuestion,\
-    ZSJudgeQuestion,ZSLongerQuestion,ZSMuchChoiceQuestion,ZSOtherQuestion,ZSShortAnswerQuestion
+    ZSJudgeQuestion,ZSLongerQuestion,ZSMuchChoiceQuestion,ZSOtherQuestion,ZSShortAnswerQuestion,ZSIndefiniteQuestion,ZSMaterialQuestion
 
 from robot.processor.log_handler import get_logger
 
@@ -278,13 +278,15 @@ class Spider(object):
                 zs_paper.paper_tag = data['paper_tag']
             elif data_type == '1':
                 zs_paper.choice_question = question
-                print(type(question))
-                for robot_question in data['question']:
-                    zs_choice_question = ZSChoiceQuestion()
-                    zs_choice_question.paper_id = str(zs_paper.data_pid)
-                    zs_choice_question.question_title = robot_question["single_question"][0]
-                    zs_choice_question.question_option = robot_question["answer"]
-                    zs_choice_question.save()
+                try:
+                    for robot_question in data['question']:
+                        zs_choice_question = ZSChoiceQuestion()
+                        zs_choice_question.paper_id = str(zs_paper.data_pid)
+                        zs_choice_question.question_title = robot_question["single_question"][0]
+                        zs_choice_question.question_option = robot_question["answer"]
+                        zs_choice_question.save()
+                except Exception as e:
+                    pass
             elif data_type == '2':
                 zs_paper.much_choice_question = question
                 for robot_question in data['question']:
@@ -336,15 +338,30 @@ class Spider(object):
                     zs_longer_question.question_title = robot_question
                     zs_longer_question.paper_id = str(zs_paper.data_pid)
                     zs_longer_question.save()
-
-            else:
+            elif data_type == '9':
+                zs_paper.indefinite_question = question
+                for robot_question in data['question']:
+                    zs_indefinite_question = ZSIndefiniteQuestion()
+                    zs_indefinite_question.paper_id = str(zs_paper.data_pid)
+                    zs_indefinite_question.question_title = robot_question["single_question"][0]
+                    zs_indefinite_question.question_option = robot_question["answer"]
+                    zs_indefinite_question.save()
+            elif data_type == '10':
                 zs_paper.other_question = question
                 for robot_question in list(data['question']):
                     zs_other_question = ZSOtherQuestion()
                     zs_other_question.question_title = robot_question
                     zs_other_question.paper_id = str(zs_paper.data_pid)
                     zs_other_question.save()
-        
+            else:
+                zs_paper.material_question = data["material"]
+                zs_paper.material_question = question
+                for robot_question in data['question']:
+                    zs_material_question = ZSIndefiniteQuestion()
+                    zs_material_question.paper_id = str(zs_paper.data_pid)
+                    zs_material_question.question_title = robot_question
+                    zs_material_question.material_title = data["material"]
+                    zs_material_question.save()
         zs_paper.save()
         print('zs_paper.save()')
         final_json = json.dumps(all_question_list, ensure_ascii=False)

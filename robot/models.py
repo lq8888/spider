@@ -32,6 +32,10 @@ class ZSPapers(models.Model):
     longer_question = models.TextField()
     # 其他题
     other_question = models.TextField()
+    # 不定项选择题
+    indefinite_question = models.TextField()
+    # 材料题
+    material_question  = models.TextField()
 
 
 # 单选题
@@ -108,3 +112,24 @@ class ZSOtherQuestion(models.Model):
     question_title = models.TextField()
     # 试卷id
     paper_id = models.CharField(max_length=15)
+
+
+# 不定项选择题
+class ZSIndefiniteQuestion(models.Model):
+    # 题目标题
+    question_title = models.TextField()
+    # 题目选项
+    question_option = models.TextField()
+    # 试卷id
+    paper_id = models.CharField(max_length=15)
+
+
+# 材料题
+class ZSMaterialQuestion(models.Model):
+    # 材料内容
+    material_title = models.TextField()
+    # 题目标题
+    question_title = models.TextField()
+    # 试卷id
+    paper_id = models.CharField(max_length=15)
+
