@@ -100,7 +100,7 @@ class Spider(object):
                 else:
                     question_dict["type"] = '10'
                 continue
-            if question_dict["type"] in ['1', '2']:
+            if question_dict["type"] in ['1', '2', '9']:
                 if i[0: 1] not in ['A', 'B', 'C', 'D']:
                     choice_question_dict["single_question"].append(i)
                 else:
@@ -112,7 +112,7 @@ class Spider(object):
                 question_dict["question"].append(i)
             if content_list[-1] == i:
                 all_question_list.append(question_dict)
-    
+
     # 获取题目数据
     def get_paper_data(self, paper_url):
         global zs_paper, question
@@ -132,24 +132,26 @@ class Spider(object):
         tag = h.xpath('/html/body/section/div[1]/div/div[contains(@class, "article-tags")]/child')
         if len(tag) != 0:
             paper_tag = h.xpath('/html/body/section/div[1]/div/div[contains(@class, "article-tags")]/a')[0].text
-        
+
         # 判断是否展示题型的标志位
         try:
             is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[2]/span')[0].text
         except:
             is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[3]/span')[0].text
+
+        is_material = h.xpath('/html/body/section/div[1]/div/article/p[2]')[0].text
         # 构造试卷基本信息
         paper_msg_dict = {'paper_title': paper_title, 'paper_time': paper_time,
                           'paper_tag': paper_tag, 'type': '999', 'data_pid': paper_url[29:34]}
-        
+
         # 定义题目存放格式
         all_question_list = [paper_msg_dict]
         question_type = "1"
         question_dict = {"type": question_type, "question": []}
         choice_question_dict = {"single_question": [], "answer": []}
-        
+
         # 判断是否含题型
-        if '一' in is_question_type:
+        if is_question_type.startswith('一'):
             pattern = re.compile(r'一、([\w\W]*)参考答案更多资料')
             all_question_content = re.search(pattern, content).group()
             content_list = all_question_content.split('\n')
@@ -163,7 +165,7 @@ class Spider(object):
                         question_dict = {"type": question_type, "question": []}
                     if i[2:] == '单选题':
                         question_dict["type"] = '1'
-                    elif i[2:] == '单项选择题':
+                    elif i[2:7] == '单项选择题':
                         question_dict["type"] = '1'
                     elif i[2:] == '多选题':
                         question_dict["type"] = '2'
@@ -184,7 +186,7 @@ class Spider(object):
                     else:
                         question_dict["type"] = '10'
                     continue
-                if question_dict["type"] in ['1', '2']:
+                if question_dict["type"] in ['1', '2', '9']:
                     if i[0: 1] not in ['A', 'B', 'C', 'D']:
                         choice_question_dict["single_question"].append(i)
                     else:
@@ -198,7 +200,7 @@ class Spider(object):
                     all_question_list.append(question_dict)
 
         # 不含题型执行下面的逻辑
-        elif '1' in is_question_type:
+        elif is_question_type.startswith('1'):
             pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
             all_question_content = re.search(pattern, content).group()
             content_list = all_question_content.split('\n')
@@ -222,6 +224,8 @@ class Spider(object):
                 self.get_specific_question(content, '单选题', all_question_list, question_dict, choice_question_dict)
             elif is_question_type in '判断题':
                 self.get_specific_question(content, '判断题', all_question_list, question_dict, choice_question_dict)
+            elif is_question_type in '不定项':
+                self.get_specific_question(content, '不定项', all_question_list, question_dict, choice_question_dict)
             elif is_question_type == '填空题：':
                 pattern = re.compile(r'填空题：([\w\W]*)参考答案更多资料')
                 all_question_content = re.search(pattern, content).group()
@@ -233,7 +237,25 @@ class Spider(object):
                 for i in content_list:
                     question_dict["question"].append(i)
                 all_question_list.append(question_dict)
+        # 获取材料题
+        elif len(is_material) > 50:
+            all_question_list.append({"material": is_material})
 
+            pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
+            all_question_content = re.search(pattern, content).group()
+            content_list = all_question_content.split('\n')
+            content_list.pop(-1)
+
+            for i in content_list:
+                if i[0: 1] not in ['A', 'B', 'C', 'D']:
+                    choice_question_dict["single_question"].append(i)
+                else:
+                    choice_question_dict["answer"].append(i)
+                if 'D' in i:
+                    question_dict["question"].append(choice_question_dict)
+                    choice_question_dict = {"single_question": [], "answer": []}
+            question_dict['type'] = '11'
+            all_question_list.append(question_dict)
         else:
             pass
         zs_paper = ZSPapers()
