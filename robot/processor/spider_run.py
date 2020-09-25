@@ -134,10 +134,14 @@ class Spider(object):
             paper_tag = h.xpath('/html/body/section/div[1]/div/div[contains(@class, "article-tags")]/a')[0].text
 
         # 判断是否展示题型的标志位
+        is_question_type = ''
         try:
-            is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[2]/span')[0].text
-        except:
-            is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[3]/span')[0].text
+            if h.xpath('/html/body/section/div[1]/div/article/p[2]/span'):
+                is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[2]/span')[0].text
+            else:
+                is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[3]/span')[0].text
+        except Exception as e:
+            pass
 
         is_material = h.xpath('/html/body/section/div[1]/div/article/p[2]')[0].text
         is_material1 = h.xpath('/html/body/section/div[1]/div/article/p[3]')[0].text
@@ -408,7 +412,7 @@ class Spider(object):
                 
                 # return final_data
                 # time.sleep(1)
-        logger.info('当前试卷index~{}'.format(i))
+            logger.info('当前试卷index~{}'.format(i))
 
 
 if __name__ == '__main__':
