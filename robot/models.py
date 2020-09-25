@@ -130,6 +130,8 @@ class ZSMaterialQuestion(models.Model):
     material_title = models.TextField()
     # 题目标题
     question_title = models.TextField()
+    # 题目选项
+    question_option = models.TextField()
     # 试卷id
     paper_id = models.CharField(max_length=15)
 

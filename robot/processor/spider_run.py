@@ -7,8 +7,9 @@ import time
 
 from requests_html import HTMLSession, HTML
 
-from robot.models import ZSPapers,ZSAnalysisQuestion,ZSChoiceQuestion,ZSCompletionQuestion,ZSExplanationQuestion,\
-    ZSJudgeQuestion,ZSLongerQuestion,ZSMuchChoiceQuestion,ZSOtherQuestion,ZSShortAnswerQuestion,ZSIndefiniteQuestion,ZSMaterialQuestion
+from robot.models import ZSPapers, ZSAnalysisQuestion, ZSChoiceQuestion, ZSCompletionQuestion, ZSExplanationQuestion, \
+    ZSJudgeQuestion, ZSLongerQuestion, ZSMuchChoiceQuestion, ZSOtherQuestion, ZSShortAnswerQuestion, \
+    ZSIndefiniteQuestion, ZSMaterialQuestion
 
 from robot.processor.log_handler import get_logger
 
@@ -30,18 +31,17 @@ user_agents = [
     'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Mobile Safari/537.36'
 ]
 
-
 logger = get_logger()
 
 
 class Spider(object):
-    
+
     def __init__(self):
         self.start_url = "http://www.zhongshi.net/html/category/zhuanye/page/{}"
         self.paper_url = "http://www.zhongshi.net/html/{}.html"
         self.headers = {"User-Agent": random.choice(user_agents)}
         # 获取试卷链接列表
-    
+
     # 获取页面对象
     def parse_url(self, url, index=None):
         session = HTMLSession()
@@ -54,13 +54,13 @@ class Spider(object):
         # 重新构建页面
         h = HTML(html=r)
         return h
-    
+
     # 获取试卷链接列表
     def get_paper_url(self, index):
         h = self.parse_url(self.start_url, index)
         paper_url_list = h.xpath('//body/section/div/div/article/header/h2//a/@href')
         return paper_url_list
-    
+
     # 获取总页数
     def get_total_page(self, index):
         h = self.parse_url(self.start_url, index)
@@ -288,6 +288,7 @@ class Spider(object):
         else:
             pass
         zs_paper = ZSPapers()
+        dd_question = []
         # 返回json格式数据
         for data in all_question_list:
             # print(data)
@@ -303,7 +304,7 @@ class Spider(object):
             if data_type == '999':
                 zs_paper.exam_title = data['paper_title']
                 zs_paper.exam_time = str(data['paper_time'])
-               # print('======' + data['paper_time'])
+                # print('======' + data['paper_time'])
                 zs_paper.paper_tag = data['paper_tag']
             elif data_type == '1':
                 zs_paper.choice_question = question
@@ -333,7 +334,6 @@ class Spider(object):
                     zs_judge_question.save()
             elif data_type == '4':
                 zs_paper.completion_question = question
-                print(data['question'])
                 for robot_question in list(data['question']):
                     zs_completion_question = ZSCompletionQuestion()
                     zs_completion_question.question_title = robot_question
@@ -383,32 +383,36 @@ class Spider(object):
                     zs_other_question.paper_id = str(zs_paper.data_pid)
                     zs_other_question.save()
             else:
-                zs_paper.material_question = data["material"]
-                zs_paper.material_question = question
-                for robot_question in data['question']:
-                    zs_material_question = ZSIndefiniteQuestion()
-                    zs_material_question.paper_id = str(zs_paper.data_pid)
-                    zs_material_question.question_title = robot_question
-                    zs_material_question.material_title = data["material"]
-                    zs_material_question.save()
+                if data.__contains__("material"):
+                    dd_question.append(data["material"])
+                if data.__contains__("question"):
+                    dd_question.append(data["question"])
+                    zs_paper.material_question = str(dd_question)
+                    for robot_question in data['question']:
+                        zs_material_question = ZSMaterialQuestion()
+                        zs_material_question.question_title = robot_question["single_question"]
+                        zs_material_question.question_option = robot_question["answer"]
+                        zs_material_question.material_title = dd_question[0]
+                        zs_material_question.paper_id = str(zs_paper.data_pid)
+                        zs_material_question.save()
         zs_paper.save()
         print('zs_paper.save()')
         final_json = json.dumps(all_question_list, ensure_ascii=False)
         logger.info('{}试卷获取结束~'.format(paper_title))
         return final_json
-    
+
     def run(self, page_index, total_page, is_hand_set=False):
         if not is_hand_set:
             total_page = int(self.get_total_page(1))
-        
+
         for i in range(page_index - 1, total_page):
             for url in self.get_paper_url(i):
                 self.get_paper_data(url)
                 # print(final_data)
-                
+
                 # return final_data
                 # time.sleep(1)
-        logger.info('当前试卷index~{}'.format(i))
+            logger.info('当前试卷index~{}'.format(i))
 
 
 if __name__ == '__main__':
