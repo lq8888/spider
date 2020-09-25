@@ -181,6 +181,8 @@ class Spider(object):
                         question_dict["type"] = '1'
                     elif i[2:7] == '单项选择题':
                         question_dict["type"] = '1'
+                    elif i[2:8] == '语言文字运用':
+                        question_dict["type"] = '1'
                     elif i[2:] == '多选题':
                         question_dict["type"] = '2'
                     elif i[2:] == '判断题':
