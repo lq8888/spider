@@ -141,6 +141,8 @@ class Spider(object):
         try:
             if h.xpath('/html/body/section/div[1]/div/article/p[2]/span'):
                 is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[2]/span')[0].text
+                if len(is_question_type) == 0:
+                    is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[3]/span')[0].text
             else:
                 is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[3]/span')[0].text
         except Exception as e:
