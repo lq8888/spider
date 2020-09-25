@@ -207,8 +207,12 @@ class Spider(object):
 
         # 不含题型执行下面的逻辑
         elif is_question_type.startswith('1'):
-            pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
-            all_question_content = re.search(pattern, content).group()
+            try:
+                pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
+                all_question_content = re.search(pattern, content).group()
+            except:
+                pattern = re.compile(r'1．([\w\W]*)参考答案更多资料')
+                all_question_content = re.search(pattern, content).group()
             content_list = all_question_content.split('\n')
             content_list.pop(-1)
             # print(content_list)
@@ -248,8 +252,12 @@ class Spider(object):
         elif len(is_material) > 50:
             all_question_list.append({"material": is_material, "type": '11'})
 
-            pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
-            all_question_content = re.search(pattern, content).group()
+            try:
+                pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
+                all_question_content = re.search(pattern, content).group()
+            except:
+                pattern = re.compile(r'1．([\w\W]*)参考答案更多资料')
+                all_question_content = re.search(pattern, content).group()
             content_list = all_question_content.split('\n')
             content_list.pop(-1)
 
@@ -273,8 +281,12 @@ class Spider(object):
                 material_content = re.search(material_pattern, content).group()
             all_question_list.append({"material": material_content, "type": '11'})
 
-            pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
-            all_question_content = re.search(pattern, content).group()
+            try:
+                pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
+                all_question_content = re.search(pattern, content).group()
+            except:
+                pattern = re.compile(r'1．([\w\W]*)参考答案更多资料')
+                all_question_content = re.search(pattern, content).group()
             content_list = all_question_content.split('\n')
             content_list.pop(-1)
 
