@@ -70,8 +70,11 @@ class Spider(object):
     # 获取指定题型数据
     def get_specific_question(self, content, question_type, all_question_list=None, question_dict=None,
                               choice_question_dict=None):
-        pattern = re.compile(r'{}([\w\W]*)参考答案更多资料'.format(question_type))
-        all_question_content = re.search(pattern, content).group()
+        try:
+            pattern = re.compile(r'{}([\w\W]*)参考答案更多资料'.format(question_type))
+            all_question_content = re.search(pattern, content).group()
+        except:
+            pass
         content_list = all_question_content.split('\n')
         content_list.pop(-1)
         for i in content_list:
@@ -150,6 +153,7 @@ class Spider(object):
                           'paper_tag': paper_tag, 'type': '999', 'data_pid': paper_url[29:34]}
 
         # 定义题目存放格式
+        all_question_content = ''
         all_question_list = [paper_msg_dict]
         question_type = "1"
         question_dict = {"type": question_type, "question": []}
@@ -157,8 +161,11 @@ class Spider(object):
 
         # 判断是否含题型
         if is_question_type.startswith('一'):
-            pattern = re.compile(r'一、([\w\W]*)参考答案更多资料')
-            all_question_content = re.search(pattern, content).group()
+            try:
+                pattern = re.compile(r'一、([\w\W]*)参考答案更多资料')
+                all_question_content = re.search(pattern, content).group()
+            except:
+                pass
             content_list = all_question_content.split('\n')
             content_list.pop(-1)
 
@@ -211,8 +218,7 @@ class Spider(object):
                 pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
                 all_question_content = re.search(pattern, content).group()
             except:
-                pattern = re.compile(r'1．([\w\W]*)参考答案更多资料')
-                all_question_content = re.search(pattern, content).group()
+                pass
             content_list = all_question_content.split('\n')
             content_list.pop(-1)
             # print(content_list)
@@ -238,8 +244,11 @@ class Spider(object):
             elif is_question_type in '不定项':
                 self.get_specific_question(content, '不定项', all_question_list, question_dict, choice_question_dict)
             elif is_question_type == '填空题：':
-                pattern = re.compile(r'填空题：([\w\W]*)参考答案更多资料')
-                all_question_content = re.search(pattern, content).group()
+                try:
+                    pattern = re.compile(r'填空题：([\w\W]*)参考答案更多资料')
+                    all_question_content = re.search(pattern, content).group()
+                except:
+                    pass
                 content_list = all_question_content.split('\n')
                 content_list.pop(0)
                 content_list.pop(-1)
@@ -253,11 +262,10 @@ class Spider(object):
             all_question_list.append({"material": is_material, "type": '11'})
 
             try:
-                pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
+                pattern = re.compile(r'[\d]\.([\w\W]*)参考答案更多资料')
                 all_question_content = re.search(pattern, content).group()
             except:
-                pattern = re.compile(r'1．([\w\W]*)参考答案更多资料')
-                all_question_content = re.search(pattern, content).group()
+                pass
             content_list = all_question_content.split('\n')
             content_list.pop(-1)
 
@@ -285,8 +293,7 @@ class Spider(object):
                 pattern = re.compile(r'1\.([\w\W]*)参考答案更多资料')
                 all_question_content = re.search(pattern, content).group()
             except:
-                pattern = re.compile(r'1．([\w\W]*)参考答案更多资料')
-                all_question_content = re.search(pattern, content).group()
+                pass
             content_list = all_question_content.split('\n')
             content_list.pop(-1)
 
