@@ -21,11 +21,10 @@ def get_exam_all_controller(request):
     return HttpResponse(json.dumps(data))
 
 
-def get_exam_new_controller(request, num):
-    page_num = int(num)
-    print(num)
+def get_exam_new_controller(request):
+    stma = str((request.POST.get("num"))).split(",")
     spider = Spider()
-    spider.run(1, page_num, True)
+    spider.run(int(stma[0]), int(stma[1]), True)
     data = {
         "status": "0"
     }

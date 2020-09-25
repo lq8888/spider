@@ -38,8 +38,11 @@ function fetch_new_exam() {
     }, 1000);
 
     $.ajax({
-        url:"/exam/"+page_num,
-        method:"GET",
+        url:"/exam/appoint",
+        method:"POST",
+        data:{
+            "num": page_num
+        },
         success:function(data) {
             clearInterval(wait_interval);
             var returned = JSON.parse(data);
