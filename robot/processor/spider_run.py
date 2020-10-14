@@ -148,9 +148,12 @@ class Spider(object):
 
         is_material = h.xpath('/html/body/section/div[1]/div/article/p[2]')[0].text
         is_material1 = h.xpath('/html/body/section/div[1]/div/article/p[3]')[0].text
+        data_pid = paper_url[29:34]
+        if data_pid.__contains__('.'):
+            data_pid = paper_url[29:33]
         # 构造试卷基本信息
         paper_msg_dict = {'paper_title': paper_title, 'paper_time': paper_time,
-                          'paper_tag': paper_tag, 'type': '999', 'data_pid': paper_url[29:34]}
+                          'paper_tag': paper_tag, 'type': '999', 'data_pid': data_pid}
 
         # 定义题目存放格式
         all_question_content = ''
