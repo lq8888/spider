@@ -285,12 +285,15 @@ class Spider(object):
             question_dict['type'] = '11'
             all_question_list.append(question_dict)
         elif is_material1.startswith('①'):
+            pattern_list = [re.compile(r'①([\w\W]*)》）'), re.compile(r'①([\w\W]*)其中不乏艺术精品。'),
+                            re.compile(r'①([\w\W]*)有删改）')]
             try:
-                material_pattern = re.compile(r'①([\w\W]*)》）')
-                material_content = re.search(material_pattern, content).group()
+                for material_pattern in pattern_list:
+                    material_content = re.search(material_pattern, content)
+                    if material_content:
+                        material_content = material_content.group()
             except:
-                material_pattern = re.compile(r'①([\w\W]*)其中不乏艺术精品。')
-                material_content = re.search(material_pattern, content).group()
+                pass
             all_question_list.append({"material": material_content, "type": '11'})
 
             try:
