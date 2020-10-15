@@ -145,9 +145,14 @@ class Spider(object):
                 is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[3]/span')[0].text
         except Exception as e:
             pass
-
-        is_material = h.xpath('/html/body/section/div[1]/div/article/p[2]')[0].text
-        is_material1 = h.xpath('/html/body/section/div[1]/div/article/p[3]')[0].text
+        # print(f'{is_question_type}')
+        is_material = ''
+        is_material1 = ''
+        try:
+            is_material = h.xpath('/html/body/section/div[1]/div/article/p[2]')[0].text
+            is_material1 = h.xpath('/html/body/section/div[1]/div/article/p[3]')[0].text
+        except:
+            pass
         data_pid = paper_url[29:34]
         if data_pid.__contains__('.'):
             data_pid = paper_url[29:33]
