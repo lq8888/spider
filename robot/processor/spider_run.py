@@ -145,9 +145,15 @@ class Spider(object):
                 is_question_type = h.xpath('/html/body/section/div[1]/div/article/p[3]/span')[0].text
         except Exception as e:
             pass
-
-        is_material = h.xpath('/html/body/section/div[1]/div/article/p[2]')[0].text
-        is_material1 = h.xpath('/html/body/section/div[1]/div/article/p[3]')[0].text
+        # print(f'{is_question_type}')
+        is_material = ''
+        is_material1 = ''
+        try:
+            is_material = h.xpath('/html/body/section/div[1]/div/article/p[2]')[0].text
+            is_material1 = h.xpath('/html/body/section/div[1]/div/article/p[3]')[0].text
+        except:
+            pass
+        # print(f'{is_material}')
         # 构造试卷基本信息
         paper_msg_dict = {'paper_title': paper_title, 'paper_time': paper_time,
                           'paper_tag': paper_tag, 'type': '999', 'data_pid': paper_url[29:34]}
