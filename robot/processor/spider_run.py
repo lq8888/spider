@@ -153,9 +153,8 @@ class Spider(object):
             is_material1 = h.xpath('/html/body/section/div[1]/div/article/p[3]')[0].text
         except:
             pass
-        data_pid = paper_url[29:34]
-        if data_pid.__contains__('.'):
-            data_pid = paper_url[29:33]
+        ppurl = paper_url.split('.html')[0]
+        data_pid = ppurl[29:ppurl.__len__()]
         # 构造试卷基本信息
         paper_msg_dict = {'paper_title': paper_title, 'paper_time': paper_time,
                           'paper_tag': paper_tag, 'type': '999', 'data_pid': data_pid}
@@ -341,7 +340,7 @@ class Spider(object):
                 zs_paper.exam_title = data['paper_title']
                 zs_paper.exam_time = str(data['paper_time'])
                 # print('======' + data['paper_time'])
-                zs_paper.paper_tag = data['paper_tag']
+                zs_paper.tags = data['paper_tag']
             elif data_type == '1':
                 zs_paper.choice_question = question
                 # try:

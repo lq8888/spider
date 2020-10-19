@@ -35,7 +35,9 @@ class ZSPapers(models.Model):
     # 不定项选择题
     indefinite_question = models.TextField()
     # 材料题
-    material_question  = models.TextField()
+    material_question = models.TextField()
+    # 专业
+    major = models.CharField(max_length=15)
 
 
 # # 单选题
